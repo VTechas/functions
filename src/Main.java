@@ -45,8 +45,10 @@ public class Main {
         System.out.println("\nMasyvas sutvarkytas stulpeliu: ");
         fixedStr(test);
         System.out.println("------------------------");
-        int number = divide(20);
-        System.out.println(divide(number));
+        int number = 16;
+        int divideCount = divide(number);
+        System.out.println("Skaicius " + number + " dalijasi is " + divideCount + " sveiku skaiciu.");
+        System.out.println("------------------------");
 
     }
 
@@ -192,11 +194,9 @@ public class Main {
 
     public static int divide (int number){
         int numcount = 0;
-        for (int i = 3 ; i < number ; i++) {
+        for (int i = 2 ; i < number ; i++) {
             if (number % i == 0) {
                 numcount++;
-            } else {
-                break;
             }
         }
         return numcount;
