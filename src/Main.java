@@ -1,4 +1,5 @@
 import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.Random;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
@@ -27,7 +28,7 @@ public class Main {
         double avg = arrayAvg(randomArray);
         System.out.println("Masyvo vidurkis: " + avg);
         System.out.println("------------------------");
-        rectangle(4,6);
+        rectangle(4, 6);
         System.out.println("------------------------");
         String random = "Šiandien labai graži diena";
         sentence((random));
@@ -49,7 +50,17 @@ public class Main {
         int divideCount = divide(number);
         System.out.println("Skaicius " + number + " dalijasi is " + divideCount + " sveiku skaiciu.");
         System.out.println("------------------------");
-
+        Integer[] sorted = divisors(33, 77, 100);
+        System.out.println("Surusiuotas masyvas pagal dalikliu be liekanos kieki: ");
+        array(sorted);
+        System.out.println("------------------------");
+        int[] arrayPrimes = rndArray(333, 777, 100);
+        array(arrayPrimes);
+        System.out.println("\nMasyve yra: " + primes(arrayPrimes) + " pirminiu skaiciu.");
+        System.out.println("------------------------");
+        allPrimes(1, 33, 3);
+        System.out.println("------------------------");
+        arrayFromArrays(1,100,100);
     }
 
     //Sukurkite Funkciją kuri priima du int tipo kintamuosius. Juos susumuoja ir atspausdina.
@@ -139,7 +150,7 @@ public class Main {
     //Sukurkite Funkciją kuri priimtų sakinį, jį užkoduotų ir grąžintų. Kodavimas - sakinį apsukame iš kitos pusės.
     //Pvz “Naglis” turi gautis “silgaN”.
 
-    public static String backwards (String back) {
+    public static String backwards(String back) {
         String reversed = "";
         for (int i = 0; i < back.length(); i++) {
             reversed = back.charAt(i) + reversed;
@@ -150,10 +161,10 @@ public class Main {
     //Parašykite funkciją, kurios argumentas būtų tekstas, kuris būtų atspausdinamas konsolėje pridedant “---”
     //pradžioje ir gale. PVZ (---labas---)
 
-    public static String beforeAfter (String argument) {
-       String surrounded;
-       surrounded = "---" + argument + "---";
-       return surrounded;
+    public static String beforeAfter(String argument) {
+        String surrounded;
+        surrounded = "---" + argument + "---";
+        return surrounded;
     }
 
     //Sugeneruokite atsitiktinį stringą iš raidžių ir skaičių (10 simbolių). Atspausdinkite simbolius stulpeliu.
@@ -163,12 +174,12 @@ public class Main {
         String symbols = "ABCDEFGHIJKLMNOPQRSTUVWXYZ12345678901234567890";
         String text = "";
         for (int i = 0; i < length; i++) {
-            text += symbols.charAt((int) (Math.random()*symbols.length()));
+            text += symbols.charAt((int) (Math.random() * symbols.length()));
         }
         return text;
     }
 
-    public static void fixedStr (String generatedStr) {
+    public static void fixedStr(String generatedStr) {
         StringBuilder result = new StringBuilder();
         StringBuilder numbers = new StringBuilder();
         for (int i = 0; i < generatedStr.length(); i++) {
@@ -192,15 +203,154 @@ public class Main {
 //Parašykite funkciją, kuri skaičiuotų, ir gražintų iš kiek sveikų skaičių jos argumentas
 //dalijasi be liekanos (išskyrus vienetą ir patį save).
 
-    public static int divide (int number){
+    public static int divide(int number) {
         int numcount = 0;
-        for (int i = 2 ; i < number ; i++) {
+        for (int i = 2; i < number; i++) {
             if (number % i == 0) {
                 numcount++;
             }
         }
         return numcount;
     }
+
+//Sugeneruokite masyvą iš 100 elementų, kurio reikšmės atsitiktiniai skaičiai nuo 33 iki 77.
+//Išrūšiuokite masyvą pagal daliklių be liekanos kiekį mažėjimo tvarka, panaudodami trečio uždavinio funkciją.
+
+    public static Integer[] divisors(int min, int max, int length) {
+        int[] numArray = rndArray(min, max, length);
+        Integer[] numArrayIntegers = new Integer[numArray.length];
+        for (int i = 0; i < numArray.length; i++) {
+            numArrayIntegers[i] = numArray[i];
+        }
+        Arrays.sort(numArrayIntegers, (a, b) -> Integer.compare(divide(b), divide(a)));
+        return numArrayIntegers;
+    }
+
+    public static void array(Integer[] arr) {
+        for (int i = 0; i < arr.length; i++) {
+            System.out.print(arr[i] + " ");
+        }
+        System.out.println();
+    }
+
+//Sugeneruokite masyvą iš 100 elementų, kurio reikšmės atsitiktiniai skaičiai nuo 333 iki 777.
+//Naudodami 3 uždavinio funkciją iš masyvo suskaičiuokite kiek yra pirminių skaičių.
+
+    public static int primes(int[] arr) {
+        int primeCount = 0;
+        for (int i = 0; i < arr.length; i++) {
+            int num = arr[i];
+            if (divide(num) == 0) {
+                primeCount++;
+            }
+        }
+        return primeCount;
+    }
+
+//Sugeneruokite masyvą iš trijų elementų, kurie yra atsitiktiniai skaičiai nuo 1 iki 33.
+//Jeigu tarp trijų paskutinių elementų yra nors vienas ne pirminis skaičius,
+//prie masyvo pridėkite dar vieną elementą- atsitiktinį skaičių nuo 1 iki 33.
+//Vėl patikrinkite pradinę sąlygą ir jeigu reikia pridėkite dar vieną elementą.
+//Kartokite, kol sąlyga nereikalaus pridėti elemento.
+
+    public static void allPrimes(int min, int max, int length) {
+        int[] arr = rndArray(min, max, length);
+        System.out.println("Pradinis masyvas: " + Arrays.toString(arr));
+        while (true) {
+            int primeCount = 0;
+            for (int i = arr.length - 3; i < arr.length; i++) {
+                if (divide(arr[i]) != 0) {
+                    primeCount = 0;
+                    break;
+                } else {
+                    primeCount++;
+                }
+            }
+            if (primeCount == 3) {
+                break;
+            } else {
+                int newArrLength = arr.length + 1;
+                int[] newArr = new int[newArrLength];
+
+                for (int i = 0; i < arr.length; i++) {
+                    newArr[i] = arr[i];
+                }
+                newArr[arr.length] = rnd(min, max);
+                arr = newArr;
+
+                System.out.println("Naujas masyvas: " + Arrays.toString(arr));
+            }
+        }
+        System.out.println("Masyvas kurio 3 paskutiniai skaiciai yra pirminiai: " + Arrays.toString(arr));
+    }
+
+    //Sugeneruokite masyvą iš 10 elementų, kurie yra masyvai iš 10 elementų, kurie yra atsitiktiniai skaičiai nuo 1 iki 100.
+    //Jeigu tokio didelio masyvo (ne atskirai mažesnių) pirminių skaičių vidurkis mažesnis už 70,
+    //suraskite masyve mažiausią skaičių (nebūtinai pirminį) ir prie jo pridėkite 3.
+    //Vėl paskaičiuokite masyvo pirminių skaičių vidurkį ir jeigu mažesnis nei 70 viską kartokite.
+
+    public static void arrayFromArrays (int min, int max, int length){
+        int[] mainArray = rndArray(1,100,100);
+        System.out.println("Pradinis masyvas: ");
+        array(mainArray);
+
+        while (true) {
+            int primeCount = 0;
+            double primeSum = 0;
+
+            for (int i = 0; i < mainArray.length; i++) {
+                int num = mainArray[i];
+                boolean isPrime = true;
+                if (num <= 1) {
+                    isPrime = false;
+                } else {
+                    for (int a = 2; a < Math.sqrt(num); a++) {
+                        if (num % a == 0) {
+                            isPrime = false;
+                            break;
+                        }
+                    }
+                }
+                if (isPrime) {
+                    primeCount++;
+                    primeSum += num;
+                }
+            }
+            double primeAvg;
+            if (primeCount == 0) {
+                primeAvg = 0;
+            } else {
+                primeAvg = primeSum / primeCount;
+            }
+            System.out.println("Pirminiu skaiciu vidurkis: " + primeAvg);
+            if (primeAvg >= 70) {
+                System.out.println("Masyve yra pakankamai pirminiu skaiciu su vidurkiu virs 70.");
+                break;
+            }
+            int minValue = Arrays.stream(mainArray).min().getAsInt();
+            for (int i = 0; i < mainArray.length; i++) {
+                if (mainArray[i] == minValue) {
+                    mainArray[i] += 3;
+                    break;
+                }
+            }
+            //System.out.println("Naujas masyvas po to, kai pridedame 3 prie maziausio skaiciaus:");
+            //array(mainArray);
+        }
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
